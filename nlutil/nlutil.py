@@ -19,7 +19,7 @@ def tfidf(document, corpus, tokenizer=None, priors=1):
         for corpus_doc in corpus:
             corpus_counter.update(tokenize(corpus_doc))
     else:
-        corpus_counter.updadte(tokenize(corpus))
+        corpus_counter.update(tokenize(corpus))
     corpus_counter.update(tokenize(document))
     for word, count in document_counter.most_common():
         tfidf_dict[word] = count / (corpus_counter[word] + priors)

@@ -29,6 +29,11 @@ class TestNLUtil(unittest.TestCase):
         expected_output_1 = {"an": 1/4, "apple": 1/2, "is": 1/5, "a": 1/6, "delicious": 1/3, "fruit": 1/4}
         output_1 = tfidf(document_1, corpus_1)
         self.assertEqual(output_1, expected_output_1)
+        document_2 = "an apple is a delicious fruit"
+        corpus_2 = ["a pear is a tasty fruit; an ant is an animal; a strawberry is a delicious fruit"]
+        expected_output_2 = {"an": 1/4, "apple": 1/2, "is": 1/5, "a": 1/6, "delicious": 1/3, "fruit": 1/4}
+        output_2 = tfidf(document_2, corpus_2)
+        self.assertEqual(output_2, expected_output_2)
 
 
 if __name__ == "__main__":
