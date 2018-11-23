@@ -1,7 +1,7 @@
 import sys
 import unittest
 
-sys.path.append('../nlutil')
+sys.path.append('..')
 
 from nlutil.nlutil import tfidf, tokenize
 
@@ -24,13 +24,13 @@ class TestNLUtil(unittest.TestCase):
         self.assertEqual(test_output_3, expected_output_3)
 
     def test_tfidf(self):
-        document_1 = "an apple is a delicious fruit"
-        corpus_1 = ["a pear is a tasty fruit", "an ant is an animal", "a strawberry is a delicious fruit"]
+        document_1 = ["an", "apple", "is", "a", "delicious", "fruit"]
+        corpus_1 = ["a", "pear", "is", "a", "tasty", "fruit", "an", "ant", "is", "an", "animal", "a", "strawberry", "is", "a", "delicious", "fruit"]
         expected_output_1 = {"an": 1/4, "apple": 1/2, "is": 1/5, "a": 1/6, "delicious": 1/3, "fruit": 1/4}
         output_1 = tfidf(document_1, corpus_1)
         self.assertEqual(output_1, expected_output_1)
         document_2 = "an apple is a delicious fruit"
-        corpus_2 = ["a pear is a tasty fruit; an ant is an animal; a strawberry is a delicious fruit"]
+        corpus_2 = "a pear is a tasty fruit; an ant is an animal; a strawberry is a delicious fruit"
         expected_output_2 = {"an": 1/4, "apple": 1/2, "is": 1/5, "a": 1/6, "delicious": 1/3, "fruit": 1/4}
         output_2 = tfidf(document_2, corpus_2)
         self.assertEqual(output_2, expected_output_2)
