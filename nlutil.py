@@ -38,7 +38,7 @@ def tokenize(text):
     return list(filter(lambda word: word.isalpha(), tokens))
 
 def quick_corpus(term, results=10):
-    topics = wiki.search('Democracy', results=results)
+    topics = wiki.search(term, results=results)
     tokens = []
     for topic in topics:
         print("Downloading {}:{}...".format(topic, ' '*(max(40 - len(topic), 1))), end='\r')
