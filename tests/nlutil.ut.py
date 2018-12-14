@@ -3,7 +3,7 @@ import unittest
 
 sys.path.append('..')
 
-from nlutil.nlutil import tfidf, tokenize
+from nlutil.nlutil import tfidf, tokenize, quick_corpus
 
 class TestNLUtil(unittest.TestCase):
     def test_tokenize(self):
@@ -35,6 +35,11 @@ class TestNLUtil(unittest.TestCase):
         output_2 = tfidf(document_2, corpus_2)
         self.assertEqual(output_2, expected_output_2)
 
+    def test_quick_corpus(self):
+        test_term = "fruit"
+        output = quick_corpus(test_term, results=1)
+        self.assertIsInstance(output, list)
+        self.assertIsInstance(output[0], str)
 
 if __name__ == "__main__":
     unittest.main()

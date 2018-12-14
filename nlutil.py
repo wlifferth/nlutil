@@ -1,6 +1,7 @@
+import wikipedia as wiki
+
 from collections import Counter
 from nltk import word_tokenize
-
 
 
 def tfidf(document, corpus, tokenizer=None, priors=1):
@@ -35,3 +36,12 @@ def tfidf(document, corpus, tokenizer=None, priors=1):
 def tokenize(text):
     tokens = [word.lower() for word in word_tokenize(text)]
     return list(filter(lambda word: word.isalpha(), tokens))
+
+def quick_corpus(term, results=10):
+    topics = wiki.search('Democracy', results=results)
+    tokens = []
+    for topic in topics:
+        print("Downloading {}:{}...".format(topic, ' '*(max(40 - len(topic), 1))), end='\r')
+        tokens += tokenize(wiki.page(topic).content)
+        print("Downloading {}:{}DONE".format(topic, ' '*(max(40 - len(topic), 1))))
+    return tokens
