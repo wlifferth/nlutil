@@ -1,9 +1,10 @@
+import imp
+import os
 import sys
 import unittest
 
-sys.path.append('..')
-
-from nlutil.nlutil import tfidf, tokenize, quick_corpus
+nlutil = imp.load_source("nlutil", os.path.join(os.path.dirname(os.path.dirname(os.path.realpath(__file__))), "nlutil.py"))
+from nlutil import tfidf, tokenize, quick_corpus
 
 class TestNLUtil(unittest.TestCase):
     def test_tokenize(self):
@@ -38,6 +39,15 @@ class TestNLUtil(unittest.TestCase):
     def test_quick_corpus(self):
         test_term = "fruit"
         output = quick_corpus(test_term, results=1)
+        self.assertIsInstance(output, list)
+        self.assertIsInstance(output[0], str)
+
+    def test_quick_corpus_disambiguation_handling(self):
+        # When a result is a disambiguation page, quick_corpus should increase the result list size
+        # until it gets a topic that isn't a disambiguation page.
+        test_term = "animal"
+        results_num = 2
+        output = quick_corpus(test_term, results=results_num)
         self.assertIsInstance(output, list)
         self.assertIsInstance(output[0], str)
 

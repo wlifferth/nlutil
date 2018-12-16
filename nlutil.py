@@ -38,10 +38,26 @@ def tokenize(text):
     return list(filter(lambda word: word.isalpha(), tokens))
 
 def quick_corpus(term, results=10):
-    topics = wiki.search(term, results=results)
-    tokens = []
-    for topic in topics:
+    blacklist = set()
+    finished_topics = set()
+    tokens = list()
+    unfinished_topics = set(wiki.search(term, results=results))
+    while unfinished_topics:
+        topic = unfinished_topics.pop()
         print("Downloading {}:{}...".format(topic, ' '*(max(40 - len(topic), 1))), end='\r')
-        tokens += tokenize(wiki.page(topic).content)
-        print("Downloading {}:{}DONE".format(topic, ' '*(max(40 - len(topic), 1))))
+        try:
+            topic_tokens = tokenize(wiki.page(topic).content)
+        except wiki.exceptions.DisambiguationError:
+            blacklist.add(topic)
+            # We now have a blacklisted topic, so we'll need to grab one extra in the future
+            results += 1
+            new_topics = wiki.search(term, results=results)
+            for new_topic in new_topics:
+                if new_topic not in blacklist and new_topic not in finished_topics and new_topic not in unfinished_topics:
+                    print("Note: because {} was a disambiguation page, we're not adding it to the corpus, and trying {} instead.".format(topic, new_topic))
+                    unfinished_topics.add(new_topic)
+        else:
+            tokens += topic_tokens
+            finished_topics.add(topic)
+            print("Downloading {}:{}DONE".format(topic, ' '*(max(40 - len(topic), 1))))
     return tokens
